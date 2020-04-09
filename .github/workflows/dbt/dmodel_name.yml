@@ -1,0 +1,34 @@
+name: dbt
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.dbt/models/dmodel_name.sql'
+    schedule:
+      - cron: '0 */1 * * *'
+
+jobs:
+  dbt:
+    name: dbt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-python@v1
+        with:
+          python-version: "3.7.x"
+      - run: echo $PWD
+      - run: echo '$' > ./profiles.yml
+      - uses: actions/cache@v1
+        id: cache-dependencies
+        with:
+          path: ~/.cache/pip
+          key: $-pip-dbt
+          restore-keys: |
+            $-pip-
+            $-
+      - name: Install DBT
+        #if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: pip3 install dbt
+      - run: dbt run --profiles-dir ./ --models dmodel_name

@@ -1,0 +1,16 @@
+name: "segment - rakam_ui"
+version: 1.0.0
+quoting:
+  database: true
+  identifier: true
+  schema: true
+profile: default
+source-paths:
+  - models
+analysis-paths:
+  - analysis
+data-paths:
+  - data
+target-path: target
+packages:
+  - git: "https://github.com/rakam-io/dbt-utils"
